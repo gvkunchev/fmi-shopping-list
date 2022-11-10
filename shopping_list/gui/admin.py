@@ -1,3 +1,11 @@
 from django.contrib import admin
+from .models import ShoppingItem
 
-# Register your models here.
+class ShoppingItemAdmin(admin.ModelAdmin):
+    model = ShoppingItem
+    ordering = ('name', 'quantity')
+    search_fields = ('name',)
+    list_display = ('name', 'quantity', 'bought')
+    fields = ('name', 'quantity', 'bought')
+
+admin.site.register(ShoppingItem, ShoppingItemAdmin)
