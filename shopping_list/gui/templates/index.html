@@ -2,7 +2,9 @@
 
 {% block content %}
     <a class="float-right" href="/logout">Logout</a>
-    <div class="header">Welcome!</div>
+    <div class="clear"></div>
+
+    <div class="header">Welcome, {{ username }}!</div>
     <div class="list">
         {% for shopping_list in shopping_lists %}
             <a href="shopping_list?id={{ shopping_list.pk }}" class="list-item">{{ shopping_list.name }}</a>

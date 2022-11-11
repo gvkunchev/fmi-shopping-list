@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <a class="float-left" href="/">Home</a>
     <a class="float-right" href="/logout">Logout</a>
+    <div class="clear"></div>
+    
     <div class="header">{{ name }}</div>
     <div class="list">
         {% for item in items %}

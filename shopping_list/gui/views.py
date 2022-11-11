@@ -9,7 +9,8 @@ from django.http import HttpResponseNotFound
 def index(request):
     """Welcome page."""
     context = {
-        'shopping_lists': ShoppingList.objects.filter(owner=request.user)
+        'shopping_lists': ShoppingList.objects.filter(owner=request.user),
+        'username': request.user.first_name or request.user.email
     }
     return render(request, 'index.html', context)
 
