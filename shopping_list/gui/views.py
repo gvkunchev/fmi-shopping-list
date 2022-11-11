@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound, JsonResponse
 from .models import ShoppingList, ShoppingItem
-from .forms import AddShoppingItemForm
+from .forms import AddShoppingItemForm, AddShoppingListForm
 
 @login_required(login_url='/login')
 def index(request):
@@ -78,3 +78,17 @@ def add_item(request):
     if form.is_valid():
         form.save()
     return redirect(f'/shopping_list?id={shopping_list_id}')
+
+
+@login_required(login_url='/login')
+def add_list(request):
+    """Add a shipping list."""
+    try:
+        name = request.POST['name']
+    except KeyError:
+        return HttpResponseNotFound('Invalid link.')
+    form = AddShoppingListForm({'name': name,
+                                'owner': request.user})
+    if form.is_valid():
+        form.save()
+    return redirect(index)

@@ -5,6 +5,12 @@
     <div class="clear"></div>
 
     <div class="header">Welcome, {{ username }}!</div>
+    <form class="add-list float-right" method="POST" action="add_list">
+        {% csrf_token %}
+        <input type="text" name="name" id="name" />
+        <button type="submit">Add</button>
+    </form>
+    <div class="clear"></div>
     <div class="list">
         {% for shopping_list in shopping_lists %}
             <a href="shopping_list?id={{ shopping_list.pk }}" class="list-item">{{ shopping_list.name }}</a>
