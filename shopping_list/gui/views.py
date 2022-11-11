@@ -92,3 +92,17 @@ def add_list(request):
     if form.is_valid():
         form.save()
     return redirect(index)
+
+
+@login_required(login_url='/login')
+def remove_list(request):
+    """Remove a shopping list."""
+    try:
+        shopping_list = ShoppingList.objects.get(pk=request.GET['id'])
+        # Ensure that a user can't touch other people's stuff
+        if shopping_list.owner != request.user:
+            return HttpResponseNotFound('Invalid link.')
+    except (KeyError, ShoppingList.DoesNotExist):
+        return HttpResponseNotFound('Invalid link.')
+    shopping_list.delete()
+    return JsonResponse({'state': 'removed'})

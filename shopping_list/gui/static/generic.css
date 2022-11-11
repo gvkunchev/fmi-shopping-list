@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
 }
 
-a {
+a, .remove-list {
     color: inherit;
     text-decoration: none;
     padding: 3px;
@@ -11,6 +11,10 @@ a {
     background-color: white;
     border: 1px solid #9a9a9a;
 }
+
+.remove-list:hover {
+    background-color: red;
+} 
 
 a:hover {
     background-color: #c9fcc3;
@@ -70,7 +74,7 @@ a:hover {
     color: white;
 }
 
-.remove-item {
+.remove-item, .remove-list {
     padding: 1px;
     color: black;
     width: 15px;

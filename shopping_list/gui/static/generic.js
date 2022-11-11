@@ -42,6 +42,22 @@ window.onload = function(){
             event.stopPropagation();
         }
     }
+    
+    var items = document.querySelectorAll('.remove-list');
+    for (var i=0; i<items.length; i++){
+        items[i].onclick = function(event){
+            var row = this.parentElement;
+            fetch('/remove_list?id=' + this.dataset.id).then(function (response) {
+                if (response.ok) {return response.json();}
+                return Promise.reject(response);
+            }).then(function (data) {
+                row.remove();
+            }).catch(function (err) {
+                console.warn('Unable to toggle the item state.', err);
+            });
+            event.preventDefault();
+        }
+    }
 }
 
 
