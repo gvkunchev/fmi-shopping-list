@@ -69,3 +69,12 @@ a:hover {
     background-color: tomato;
     color: white;
 }
+
+.remove-item {
+    padding: 1px;
+    color: black;
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+    text-align: center;
+}

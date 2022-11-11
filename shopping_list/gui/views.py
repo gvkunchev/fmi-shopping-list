@@ -42,3 +42,17 @@ def toggle_item(request):
     item.bought = state
     item.save()
     return JsonResponse({'state': item.bought})
+
+
+@login_required(login_url='/login')
+def remove_item(request):
+    """Remove an item."""
+    try:
+        item = ShoppingItem.objects.get(pk=request.GET['id'])
+        # Ensure that a user can't touch other people's stuff
+        if item.shopping_list.owner != request.user:
+            return HttpResponseNotFound('Invalid link.')
+    except (KeyError, ShoppingItem.DoesNotExist):
+        return HttpResponseNotFound('Invalid link.')
+    item.delete()
+    return JsonResponse({'state': 'removed'})
