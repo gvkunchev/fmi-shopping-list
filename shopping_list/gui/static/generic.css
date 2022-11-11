@@ -78,3 +78,7 @@ a:hover {
     line-height: 15px;
     text-align: center;
 }
+
+.add-item #quantity {
+    width: 40px;
+}

@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import ShoppingList, ShoppingItem
 from django.http import HttpResponseNotFound, JsonResponse
-
+from .models import ShoppingList, ShoppingItem
+from .forms import AddShoppingItemForm
 
 @login_required(login_url='/login')
 def index(request):
@@ -23,6 +23,7 @@ def shopping_list(request):
         return HttpResponseNotFound('Invalid link. No ID found.')
     context = {
         'name': shopping_list.name,
+        'id': shopping_list.pk,
         'items': shopping_list.items.all()
     }
     return render(request, 'shopping_list.html', context)
@@ -56,3 +57,24 @@ def remove_item(request):
         return HttpResponseNotFound('Invalid link.')
     item.delete()
     return JsonResponse({'state': 'removed'})
+
+
+@login_required(login_url='/login')
+def add_item(request):
+    """Add an item."""
+    try:
+        name = request.POST['name']
+        quantity = request.POST['quantity']
+        shopping_list_id = int(request.POST['shopping_list'])
+        shopping_list = ShoppingList.objects.get(pk=shopping_list_id)
+        # Ensure that a user can't touch other people's stuff
+        if shopping_list.owner != request.user:
+            return HttpResponseNotFound('Invalid link.')
+    except (KeyError, ValueError, ShoppingList.DoesNotExist):
+        return HttpResponseNotFound('Invalid link.')
+    form = AddShoppingItemForm({'name': name,
+                                'quantity': quantity,
+                                'shopping_list': shopping_list})
+    if form.is_valid():
+        form.save()
+    return redirect(f'/shopping_list?id={shopping_list_id}')
