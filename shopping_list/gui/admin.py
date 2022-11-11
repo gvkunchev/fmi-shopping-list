@@ -4,10 +4,10 @@ from .models import ShoppingItem, ShoppingList
 
 class ShoppingItemAdmin(admin.ModelAdmin):
     model = ShoppingItem
-    ordering = ('name', 'quantity')
-    search_fields = ('name',)
-    list_display = ('name', 'quantity', 'bought')
-    fields = ('name', 'quantity', 'bought')
+    ordering = ('shopping_list', 'name', 'quantity')
+    search_fields = ('name', 'shopping_list')
+    list_display = ('shopping_list', 'name', 'quantity', 'bought')
+    fields = ('shopping_list', 'name', 'quantity', 'bought')
 
 
 class ShoppingListAdmin(admin.ModelAdmin):
