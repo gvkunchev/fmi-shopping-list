@@ -9,6 +9,7 @@ class ShoppingList(models.Model):
     def __str__(self):
         return f"{self.owner.email} - {self.name}"
 
+
 class ShoppingItem(models.Model):
     name = models.CharField(max_length=90)
     quantity = models.IntegerField(default=1)
