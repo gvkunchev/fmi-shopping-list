@@ -60,3 +60,12 @@ a:hover {
     border-radius: 5px;
     margin: 3px;
 }
+
+.list-item input{
+    display: none;
+}
+
+.bought-item {
+    background-color: tomato;
+    color: white;
+}
