@@ -14,7 +14,8 @@ class ShoppingItem(models.Model):
     name = models.CharField(max_length=90)
     quantity = models.IntegerField(default=1)
     bought = models.BooleanField(default=False)
-    shopping_list = models.ForeignKey(ShoppingList, on_delete=models.CASCADE)
+    shopping_list = models.ForeignKey(ShoppingList, on_delete=models.CASCADE,
+                                      related_name='items')
 
     def __str__(self):
         return self.name
