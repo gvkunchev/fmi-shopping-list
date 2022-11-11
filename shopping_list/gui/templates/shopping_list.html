@@ -12,6 +12,7 @@
                 {{ item.quantity }} - {{ item.name }}
                 <input
                     type="checkbox"
+                    data-id="{{ item.pk }}"
                     {% if item.bought %}
                         checked="checked"
                     {% endif %}

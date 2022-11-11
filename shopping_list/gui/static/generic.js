@@ -11,9 +11,22 @@ window.onload = function(){
         }
         items[i].parentElement.onclick = function(){
             input = this.querySelector('input');
-            input.checked = !input.checked;
-            input.onchange();
+            state = input.checked ? 0 : 1;
+            console.log(state)
+            fetch('/toggle_item?id=' + input.dataset.id + '&state=' + state).then(function (response) {
+                if (response.ok) {return response.json();}
+                return Promise.reject(response);
+            }).then(function (data) {
+                console.log(data['state']);
+                input.checked = data['state'];
+                input.onchange();
+            }).catch(function (err) {
+                console.warn('Unable to toggle the item state.', err);
+            });
         }
         items[i].onchange();
     }
 }
+
+
+
