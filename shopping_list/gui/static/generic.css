@@ -86,3 +86,7 @@ a:hover {
 .add-item #quantity {
     width: 40px;
 }
+
+.errorlist {
+    color: red;
+}
