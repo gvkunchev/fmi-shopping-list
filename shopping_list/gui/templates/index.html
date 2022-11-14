@@ -12,11 +12,15 @@
     </form>
     <div class="clear"></div>
     <div class="list">
-        {% for shopping_list in shopping_lists %}
-            <a href="shopping_list?id={{ shopping_list.pk }}" class="list-item">
-                {{ shopping_list.name }}
-                <div class="remove-list float-right" data-id="{{ shopping_list.pk }}">x</div>
-            </a>
-        {% endfor %}
+        {% if shopping_lists %}
+            {% for shopping_list in shopping_lists %}
+                <a href="shopping_list?id={{ shopping_list.pk }}" class="list-item">
+                    {{ shopping_list.name }}
+                    <div class="remove-list float-right" data-id="{{ shopping_list.pk }}">x</div>
+                </a>
+            {% endfor %}
+        {% else %}
+                <span class="empty-list-identifier">No lists yet</span>
+        {% endif %}
     </div>
 {% endblock %}

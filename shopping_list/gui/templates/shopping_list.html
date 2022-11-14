@@ -15,18 +15,22 @@
     </form>
     <div class="clear"></div>
     <div class="list">
-        {% for item in items %}
-            <div class="list-item">
-                {{ item.quantity }} - {{ item.name }}
-                <input
-                    type="checkbox"
-                    data-id="{{ item.pk }}"
-                    {% if item.bought %}
-                        checked="checked"
-                    {% endif %}
-                />
-                <a class="remove-item float-right" href="#">x</a>
-            </div>
-        {% endfor %}
+        {% if items %}
+            {% for item in items %}
+                <div class="list-item">
+                    {{ item.quantity }} - {{ item.name }}
+                    <input
+                        type="checkbox"
+                        data-id="{{ item.pk }}"
+                        {% if item.bought %}
+                            checked="checked"
+                        {% endif %}
+                    />
+                    <a class="remove-item float-right" href="#">x</a>
+                </div>
+            {% endfor %}
+        {% else %}
+                <span class="empty-list-identifier">No items yet</span>
+        {% endif %}
     </div>
 {% endblock %}
