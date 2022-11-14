@@ -12,5 +12,6 @@ urlpatterns = [
     path('add_item', views.add_item),
     path('add_list', views.add_list),
     path('login', auth_views.LoginView.as_view()),
-    path('logout', auth_views.LogoutView.as_view())
+    path('logout', auth_views.LogoutView.as_view()),
+    path('register', views.register)
 ]

@@ -1,15 +1,16 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound, JsonResponse
 from .models import ShoppingList, ShoppingItem
-from .forms import AddShoppingItemForm, AddShoppingListForm
+from .forms import AddShoppingItemForm, AddShoppingListForm, RegisterUserForm
 
 @login_required(login_url='/login')
 def index(request):
     """Welcome page."""
     context = {
         'shopping_lists': ShoppingList.objects.filter(owner=request.user),
-        'username': request.user.first_name or request.user.email
+        'username': request.user.username
     }
     return render(request, 'index.html', context)
 
@@ -106,3 +107,17 @@ def remove_list(request):
         return HttpResponseNotFound('Invalid link.')
     shopping_list.delete()
     return JsonResponse({'state': 'removed'})
+
+def register(request):
+    if request.method == "POST":
+        form = RegisterUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect(index)
+    else:
+        form = RegisterUserForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'registration/register.html', context)
