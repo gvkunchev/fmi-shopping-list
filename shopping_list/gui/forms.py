@@ -20,7 +20,13 @@ class AddShoppingListForm(forms.ModelForm):
 
 class RegisterUserForm(UserCreationForm):
 
-	class Meta:
-		model = User
-		fields = ("username", "first_name", "last_name",
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for fieldname in ['username', 'password1', 'password2']:
+            self.fields[fieldname].help_text = None
+
+    class Meta:
+        model = User
+        fields = ("username", "first_name", "last_name",
                   "password1", "password2")
