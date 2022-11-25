@@ -10,12 +10,17 @@ class ShoppingItemAdmin(admin.ModelAdmin):
     fields = ('shopping_list', 'name', 'quantity', 'bought')
 
 
+class ShoppingItemInlineAdmin(admin.TabularInline):
+    model = ShoppingItem
+
+
 class ShoppingListAdmin(admin.ModelAdmin):
     model = ShoppingList
     ordering = ('name', 'owner')
     search_fields = ('name',)
     list_display = ('name', 'owner')
     fields = ('name', 'owner')
+    inlines = [ShoppingItemInlineAdmin]
 
 
 admin.site.register(ShoppingItem, ShoppingItemAdmin)
