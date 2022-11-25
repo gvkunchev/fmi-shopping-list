@@ -69,7 +69,7 @@ def add_item(request):
     try:
         name = request.POST['name']
         quantity = request.POST['quantity']
-        shopping_list_id = int(request.POST['shopping_list'])
+        shopping_list_id = int(request.POST['id'])
         shopping_list = ShoppingList.objects.get(pk=shopping_list_id)
         # Ensure that a user can't touch other people's stuff
         if shopping_list.owner != request.user:

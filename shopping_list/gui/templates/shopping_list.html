@@ -8,7 +8,7 @@
     <div class="header">{{ name }}</div>
     <form class="add-item float-right" method="POST" action="add_item">
         {% csrf_token %}
-        <input type="hidden" value="{{ id }}" name="shopping_list" id="shopping_list" />
+        <input type="hidden" value="{{ id }}" name="id" id="id" />
         <input type="number" value="1" name="quantity" id="quantity" />
         <input type="text" name="name" id="name" />
         <button type="submit">Add</button>
