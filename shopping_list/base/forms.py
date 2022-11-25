@@ -10,7 +10,6 @@ class AddShoppingItemForm(forms.ModelForm):
         model = ShoppingItem
         fields = ('name', 'quantity', 'shopping_list')
 
-
 class AddShoppingListForm(forms.ModelForm):
 
     class Meta:

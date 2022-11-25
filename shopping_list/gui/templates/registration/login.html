@@ -1,12 +1,14 @@
 {% extends "base.html" %}
+{% load bootstrap5 %}
 
 {% block content %}
-  Please log in...
+  <div class="card-title">Please log in...</div>
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
+    {% bootstrap_form form %}
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <button type="submit" class="btn btn-primary">Login</button>
+      <a href="/register" class="btn btn-dark">...or sign up</a>
+    </div>
   </form>
-  <br/><br/>
-  <a href="/register">...or sign up</a>
 {% endblock %}

@@ -1,26 +1,40 @@
 {% extends "base.html" %}
+{% load bootstrap5 %}
+{% load bootstrap_icons %}
+
 
 {% block content %}
-    <a class="float-right" href="/logout">Logout</a>
-    <div class="clear"></div>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-dark" href="/logout">Logout</a>
+    </div>
 
-    <div class="header">Welcome, {{ username }}!</div>
-    <form class="add-list float-right" method="POST" action="add_list">
+    <div class="card-title display-6">Welcome, {{ username }}!</div>
+
+    <form method="POST" action="add_list" class="form-inline">
         {% csrf_token %}
-        <input type="text" name="name" id="name" />
-        <button type="submit">Add</button>
+        <div class="input-group input-group-sm d-md-flex justify-content-md-end">
+            <input type="text" name="name" id="name" placeholder="New list name"/>
+            <button type="submit" class="btn btn-primary m-1">Add</button>
+        </div>
     </form>
-    <div class="clear"></div>
-    <div class="list">
+    
+    <ul class="list-group m-2">
         {% if shopping_lists %}
             {% for shopping_list in shopping_lists %}
-                <a href="shopping_list?id={{ shopping_list.pk }}" class="list-item">
-                    {{ shopping_list.name }}
-                    <div class="remove-list float-right" data-id="{{ shopping_list.pk }}">x</div>
-                </a>
+                <li class="list-group-item">
+                    <a href="shopping_list?id={{ shopping_list.pk }}" class="btn btn-secondary form-control text-start">
+                        {{ shopping_list.name }}
+                        <div class="remove-list btn btn-danger float-end" data-id="{{ shopping_list.pk }}">{% bs_icon 'trash' %}</div>
+                    </a>
+                </li>
             {% endfor %}
+            <li class="list-group-item empty-list invisible">
+                No lists yet
+            </li>
         {% else %}
-                <span class="empty-list-identifier">No lists yet</span>
+            <li class="list-group-item empty-list">
+                No lists yet
+            </li>
         {% endif %}
-    </div>
+    </ul>
 {% endblock %}

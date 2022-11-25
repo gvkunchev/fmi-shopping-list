@@ -1,36 +1,64 @@
 {% extends "base.html" %}
+{% load bootstrap_icons %}
 
 {% block content %}
-    <a class="float-left" href="/">Home</a>
-    <a class="float-right" href="/logout">Logout</a>
-    <div class="clear"></div>
+    <div>
+        <a class="btn btn-dark" href="/">Home</a>
+        <a class="btn btn-dark float-end" href="/logout">Logout</a>
+    </div>
 
-    <div class="header">{{ name }}</div>
-    <form class="add-item float-right" method="POST" action="add_item">
+    <div class="card-title display-6">{{ name }}</div>
+    
+    <form class="form-inline" method="POST" action="add_item">
         {% csrf_token %}
-        <input type="hidden" value="{{ id }}" name="id" id="id" />
-        <input type="number" value="1" name="quantity" id="quantity" />
-        <input type="text" name="name" id="name" />
-        <button type="submit">Add</button>
+        <div class="input-group input-group-sm d-md-flex justify-content-md-end">
+            <input type="hidden" value="{{ id }}" name="id" id="id" />
+            <input type="number" value="1" name="quantity" id="quantity" class="input-sm" />
+            <input type="text" name="name" id="name" placeholder="New product name" />
+            <button type="submit" class="btn btn-primary m-1">Add</button>
+        </div>
     </form>
-    <div class="clear"></div>
-    <div class="list">
+
+    <ul class="list-group m-2 shopping-items">
         {% if items %}
             {% for item in items %}
-                <div class="list-item">
-                    {{ item.quantity }} - {{ item.name }}
-                    <input
-                        type="checkbox"
-                        data-id="{{ item.pk }}"
-                        {% if item.bought %}
-                            checked="checked"
-                        {% endif %}
-                    />
-                    <a class="remove-item float-right" href="#">x</a>
-                </div>
+                <li class="list-item list-group-item">
+                    <div class="btn btn-secondary w-100 text-start">
+                            {% for char in item.quantity|slugify %}
+                                <span class="text-light">
+                                    {# Can't figure out how to pipe the char value so... #}
+                                    {% if char == '0' %}{% bs_icon '0-circle-fill' size="1.3em" %}{% endif %}
+                                    {% if char == '1' %}{% bs_icon '1-circle-fill' size="1.3em" %}{% endif %}
+                                    {% if char == '2' %}{% bs_icon '2-circle-fill' size="1.3em" %}{% endif %}
+                                    {% if char == '3' %}{% bs_icon '3-circle-fill' size="1.3em" %}{% endif %}
+                                    {% if char == '4' %}{% bs_icon '4-circle-fill' size="1.3em" %}{% endif %}
+                                    {% if char == '5' %}{% bs_icon '5-circle-fill' size="1.3em" %}{% endif %}
+                                    {% if char == '6' %}{% bs_icon '6-circle-fill' size="1.3em" %}{% endif %}
+                                    {% if char == '7' %}{% bs_icon '7-circle-fill' size="1.3em" %}{% endif %}
+                                    {% if char == '8' %}{% bs_icon '8-circle-fill' size="1.3em" %}{% endif %}
+                                    {% if char == '9' %}{% bs_icon '9-circle-fill' size="1.3em" %}{% endif %}
+                                </span>
+                            {% endfor %}
+                            {{ item.name }}
+                            <input
+                                type="checkbox"
+                                class="invisible"
+                                data-id="{{ item.pk }}"
+                                {% if item.bought %}
+                                    checked="checked"
+                                {% endif %}
+                            />
+                            <div class="remove-item btn btn-danger float-end" data-id="{{ item.pk }}">{% bs_icon 'trash' %}</div>
+                        </div>
+                </li>
             {% endfor %}
+            <li class="list-group-item empty-list invisible">
+                No lists yet
+            </li>
         {% else %}
-                <span class="empty-list-identifier">No items yet</span>
+            <li class="list-group-item empty-list">
+                No items yet
+            </li>
         {% endif %}
-    </div>
+    </ul>
 {% endblock %}

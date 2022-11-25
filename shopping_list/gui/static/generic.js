@@ -1,64 +1,75 @@
-window.onload = function(){
-    var items = document.querySelectorAll('.list-item input');
-    for (var i=0; i<items.length; i++){
-        // Change class of the item on bought status change
-        items[i].onchange = function(){
-            if (this.checked){
-                this.parentElement.classList.add("bought-item");
+$(document).ready(function(){
+
+    // Handle removing of a shopping list
+    $('.remove-list').bind('click', function(event){
+        var row = $(this).parents('.list-group-item');
+        var container = row.parents('.list-group');
+        var id = $(this).data('id');
+        var payload = {'csrfmiddlewaretoken': $('[name=csrfmiddlewaretoken]').val(),
+                       'id': id};
+        $.post("/remove_list", payload, function(data){
+            if (data['state'] == 'removed'){
+                $(row).remove();
+                if(container.find('.list-group-item').length === 1){
+                    $('.empty-list').removeClass('invisible');
+                }
+                else{
+                    $('.empty-list').addClass('invisible');
+                }
             }
-            else{
-                this.parentElement.classList.remove("bought-item");
+        });
+        event.stopPropagation();
+        event.preventDefault();
+    })
+
+    // Handle buying a product
+    $('.shopping-items .list-item').bind('click', function(){
+        var input = $(this).find('input[type=checkbox]');
+        var state = input.attr('checked') ? 0 : 1;
+        var id = input.data('id');
+        var payload = {'csrfmiddlewaretoken': $('[name=csrfmiddlewaretoken]').val(),
+                       'id': id,
+                       'state': state};
+        $.post("/toggle_item", payload, function(data){
+            if (data['state'] === true){
+                input.attr('checked', 'checked').change();
             }
+            else if (data['state'] === false){
+                input.attr('checked', false).change();
+            }
+        });
+    })
+    $('input[type=checkbox').bind('change', function(){
+        var button = $(this).parents('.list-item > .btn');
+        if ($(this).attr('checked')){
+            button.addClass('btn-success');
+            button.removeClass('btn-secondary');
         }
-        // Change bought status on click
-        items[i].parentElement.onclick = function(){
-            input = this.querySelector('input');
-            state = input.checked ? 0 : 1;
-            fetch('/toggle_item?id=' + input.dataset.id + '&state=' + state).then(function (response) {
-                if (response.ok) {return response.json();}
-                return Promise.reject(response);
-            }).then(function (data) {
-                input.checked = data['state'];
-                input.onchange();
-            }).catch(function (err) {
-                console.warn('Unable to toggle the item state.', err);
-            });
+        else{
+            button.removeClass('btn-success');
+            button.addClass('btn-secondary');
         }
-        // Trigger initial class allocation
-        items[i].onchange();
-        // Remove element on x-button click
-        var remove_button = items[i].parentElement.querySelector('.remove-item');
-        remove_button.onclick = function(event){
-            var row = this.parentElement;
-            var input = row.querySelector('input');
-            fetch('/remove_item?id=' + input.dataset.id).then(function (response) {
-                if (response.ok) {return response.json();}
-                return Promise.reject(response);
-            }).then(function (data) {
-                row.remove();
-            }).catch(function (err) {
-                console.warn('Unable to toggle the item state.', err);
-            });
-            event.stopPropagation();
-        }
-    }
-    
-    var items = document.querySelectorAll('.remove-list');
-    for (var i=0; i<items.length; i++){
-        items[i].onclick = function(event){
-            var row = this.parentElement;
-            fetch('/remove_list?id=' + this.dataset.id).then(function (response) {
-                if (response.ok) {return response.json();}
-                return Promise.reject(response);
-            }).then(function (data) {
-                row.remove();
-            }).catch(function (err) {
-                console.warn('Unable to toggle the item state.', err);
-            });
-            event.preventDefault();
-        }
-    }
-}
+    }).change();
 
-
-
+    // Handle removing a product from shopping list
+    $('.remove-item').bind('click', function(event){
+        var row = $(this).parents('.list-group-item');
+        var container = row.parents('.list-group');
+        var id = $(this).data('id');
+        var payload = {'csrfmiddlewaretoken': $('[name=csrfmiddlewaretoken]').val(),
+                       'id': id};
+        $.post("/remove_item", payload, function(data){
+            if (data['state'] == 'removed'){
+                $(row).remove();
+                if(container.find('.list-group-item').length === 1){
+                    $('.empty-list').removeClass('invisible');
+                }
+                else{
+                    $('.empty-list').addClass('invisible');
+                }
+            }
+        });
+        event.stopPropagation();
+        event.preventDefault();
+    })
+});

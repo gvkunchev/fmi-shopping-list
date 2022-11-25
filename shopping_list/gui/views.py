@@ -3,7 +3,8 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound, JsonResponse
 from base.models import ShoppingList, ShoppingItem
-from base.forms import AddShoppingItemForm, AddShoppingListForm, RegisterUserForm
+from base.forms import (AddShoppingItemForm, AddShoppingListForm,
+                        RegisterUserForm)
 from .view_decorators import can_view_item
 
 
@@ -34,9 +35,9 @@ def shopping_list(request):
 @login_required(login_url='/login')
 def toggle_item(request):
     """Toggle between bought states of an item."""
-    item = ShoppingItem.objects.get(pk=request.GET['id'])
+    item = ShoppingItem.objects.get(pk=request.POST['id'])
     try:
-        state = request.GET['state'] == '1'
+        state = request.POST['state'] == '1'
     except KeyError:
         return HttpResponseNotFound('Invalid link.')
     item.bought = state
@@ -48,7 +49,7 @@ def toggle_item(request):
 @login_required(login_url='/login')
 def remove_item(request):
     """Remove an item."""
-    item = ShoppingItem.objects.get(pk=request.GET['id'])
+    item = ShoppingItem.objects.get(pk=request.POST['id'])
     item.delete()
     return JsonResponse({'state': 'removed'})
 
@@ -90,7 +91,7 @@ def add_list(request):
 @login_required(login_url='/login')
 def remove_list(request):
     """Remove a shopping list."""
-    shopping_list = ShoppingList.objects.get(pk=request.GET['id'])
+    shopping_list = ShoppingList.objects.get(pk=request.POST['id'])
     shopping_list.delete()
     return JsonResponse({'state': 'removed'})
 
