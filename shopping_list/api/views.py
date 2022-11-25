@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from gui.models import ShoppingList
+from base.models import ShoppingList
 from django.contrib.auth import authenticate
 from .serializers import ShoppingListSerializer
 

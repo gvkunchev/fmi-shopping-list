@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotFound, JsonResponse
-from .models import ShoppingList, ShoppingItem
-from .forms import AddShoppingItemForm, AddShoppingListForm, RegisterUserForm
+from base.models import ShoppingList, ShoppingItem
+from base.forms import AddShoppingItemForm, AddShoppingListForm, RegisterUserForm
 
 @login_required(login_url='/login')
 def index(request):

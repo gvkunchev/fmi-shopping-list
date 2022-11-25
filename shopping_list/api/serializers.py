@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from gui.models import ShoppingList
+from base.models import ShoppingList
 
 
 class ShoppingListSerializer(serializers.ModelSerializer):
