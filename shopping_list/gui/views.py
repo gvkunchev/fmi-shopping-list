@@ -20,6 +20,9 @@ def shopping_list(request):
     """Individual shopping list page."""
     try:
         shopping_list = ShoppingList.objects.get(pk=request.GET['id'])
+        # Ensure that a user can't touch other people's stuff
+        if shopping_list.owner != request.user:
+            return HttpResponseNotFound('Invalid link.')
     except (KeyError, ShoppingList.DoesNotExist):
         return HttpResponseNotFound('Invalid link. No ID found.')
     context = {
@@ -83,7 +86,7 @@ def add_item(request):
 
 @login_required(login_url='/login')
 def add_list(request):
-    """Add a shipping list."""
+    """Add a shopping list."""
     try:
         name = request.POST['name']
     except KeyError:
